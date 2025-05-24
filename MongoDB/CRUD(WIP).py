@@ -4,6 +4,7 @@
 # https://www.mongodb.com/ja-jp/docs/manual/crud/
 # Work In Progress - Code isn't entirely stable.
 # 開発中 - コードは完全に安定していません。
+# Yg request bahasa indonesia, tunggu yak... lagi malas 
 
 collection_name = "collection"
 
