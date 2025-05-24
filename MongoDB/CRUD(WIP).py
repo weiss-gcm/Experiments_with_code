@@ -1,4 +1,5 @@
-#Make a MongoDB Query Easier to Copy-Paste
+# Make a MongoDB Query Easier to be written and copy pasted
+# By @weiss-gcm and @shn-enaa
 def menu_db():
     print("\nMongoDB Query Generator")
     print("1. Insert Query")
@@ -25,7 +26,6 @@ def insert_data():
             if key.lower() == 'done':
                 break
             value = input(f"Value for {key}: ")
-            # Try to convert numbers automatically
             try:
                 value = int(value) if value.isdigit() else float(value) if value.replace('.', '', 1).isdigit() else value
             except ValueError:
@@ -179,7 +179,6 @@ def delete_data():
     print("3. Back to Main Menu")
     choice = input("Select Option (1-3): ")
     
-    # Build filter query
     print("\nBuild your filter (which documents to delete)")
     filter_query = {}
     while True:
