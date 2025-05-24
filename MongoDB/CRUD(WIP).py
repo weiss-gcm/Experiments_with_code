@@ -5,6 +5,8 @@
 # Work In Progress - Code isn't entirely stable.
 # Translation isn't entirely completed...
 
+collection_name = "collection"
+
 def menu_db():
     print("\nMongoDB Query Generator | 基本的な CRUD MongoDB クエリージェネレーター")
     print("1. Insert Query | クエリの挿入")
@@ -21,7 +23,7 @@ def insert_data():
     print("2. Insert Many | 複数データの挿入")
     print("3. Back to Main Menu | 前のメニューに戻る")
     choice = input("Select Option (1-3) | オプションを選択（1～3) : ")
-    
+
     if choice == "1":
         print("\nInsert One | 挿入1")
         print("Enter field names and values (type 'done' when finished)")
@@ -36,14 +38,14 @@ def insert_data():
             except ValueError:
                 pass
             document[key] = value
-        
+
         if document:
-            query = f"db.collection.insertOne({document})"
+            query = f"db.{collection_name}.insertOne({document})"
             print("\nYour MongoDB query:")
             print(query)
         else:
             print("No fields provided, query not generated.")
-    
+
     elif choice == "2":
         print("\nInsert Many Documents")
         print("Enter documents one by one (type 'done' when finished)")
@@ -61,18 +63,18 @@ def insert_data():
                 except ValueError:
                     pass
                 doc[key] = value
-            
+
             if doc:
                 documents.append(doc)
             else:
                 print("Empty document skipped.")
-            
+
             more = input("Add another document? (y/n): ").lower()
             if more != 'y':
                 break
-        
+
         if documents:
-            query = f"db.collection.insertMany({documents})"
+            query = f"db.{collection_name}.insertMany({documents})"
             print("\nYour MongoDB query:")
             print(query)
         else:
@@ -85,7 +87,7 @@ def find_data():
     print("3. Find All")
     print("4. Back to Main Menu")
     choice = input("Select Option (1-4): ")
-    
+
     query = {}
     print("\nBuild your query (leave empty to match all documents)")
     while True:
@@ -98,19 +100,21 @@ def find_data():
         except ValueError:
             pass
         query[key] = value
-    
+
     if choice == "1":
-        mongo_query = f"db.collection.findOne({query})"
+        mongo_query = f"db.{collection_name}.findOne({query})"
     elif choice == "2":
         try:
             limit = int(input("Maximum documents to return: "))
-            mongo_query = f"db.collection.find({query}).limit({limit})"
+            mongo_query = f"db.{collection_name}.find({query}).limit({limit})"
         except ValueError:
-            mongo_query = f"db.collection.find({query})"
+            mongo_query = f"db.{collection_name}.find({query})"
             print("Invalid number, using no limit")
     elif choice == "3":
-        mongo_query = f"db.collection.find({query})"
-    
+        mongo_query = f"db.{collection_name}.find({query})"
+    else:
+        return
+
     print("\nYour MongoDB query:")
     print(mongo_query)
 
@@ -120,7 +124,7 @@ def update_data():
     print("2. Update Many")
     print("3. Back to Main Menu")
     choice = input("Select Option (1-3): ")
-    
+
     print("\nBuild your filter (which documents to update)")
     filter_query = {}
     while True:
@@ -143,7 +147,7 @@ def update_data():
         op = input("Operation (or 'done' to finish): ")
         if op.lower() == 'done':
             break
-        
+
         if "+=" in op:
             field, value = op.split("+=")
             field = field.strip()
@@ -168,12 +172,14 @@ def update_data():
             update["$set"][field] = value
         else:
             print("Invalid format. Use field=value or field+=number")
-    
+
     if choice == "1":
-        mongo_query = f"db.collection.updateOne({filter_query}, {update})"
+        mongo_query = f"db.{collection_name}.updateOne({filter_query}, {update})"
+    elif choice == "2":
+        mongo_query = f"db.{collection_name}.updateMany({filter_query}, {update})"
     else:
-        mongo_query = f"db.collection.updateMany({filter_query}, {update})"
-    
+        return
+
     print("\nYour MongoDB query:")
     print(mongo_query)
 
@@ -183,7 +189,7 @@ def delete_data():
     print("2. Delete Many")
     print("3. Back to Main Menu")
     choice = input("Select Option (1-3): ")
-    
+
     print("\nBuild your filter (which documents to delete)")
     filter_query = {}
     while True:
@@ -196,19 +202,26 @@ def delete_data():
         except ValueError:
             pass
         filter_query[key] = value
-    
+
     if choice == "1":
-        mongo_query = f"db.collection.deleteOne({filter_query})"
+        mongo_query = f"db.{collection_name}.deleteOne({filter_query})"
+    elif choice == "2":
+        mongo_query = f"db.{collection_name}.deleteMany({filter_query})"
     else:
-        mongo_query = f"db.collection.deleteMany({filter_query})"
-    
+        return
+
     print("\nYour MongoDB query:")
     print(mongo_query)
 
 def main():
+    global collection_name
     print("Simple MongoDB Query Generator")
     print("This tool helps you build MongoDB queries to copy-paste")
-    
+
+    collection_name = input("Enter your MongoDB collection name: ").strip()
+    if not collection_name:
+        collection_name = "collection"
+
     while True:
         selection = menu_db()
         if selection == "1":
@@ -224,8 +237,9 @@ def main():
             break
         else:
             print("Invalid selection, please try again.")
-        
+
         input("\nPress Enter to continue...")
 
 if __name__ == "__main__":
     main()
+
