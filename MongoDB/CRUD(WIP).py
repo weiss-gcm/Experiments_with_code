@@ -1,24 +1,29 @@
 # Make a MongoDB Query Easier to be written and copy pasted
 # By @weiss-gcm and @shn-enaa
+# 以下のコードは、現在のGithubリポジトリにアップロードされる前に何度も書き直されている。
+# https://www.mongodb.com/ja-jp/docs/manual/crud/
+# Work In Progress - Code isn't entirely stable.
+# Translation isn't entirely completed...
+
 def menu_db():
-    print("\nMongoDB Query Generator")
-    print("1. Insert Query")
-    print("2. Find Query")
-    print("3. Update Query")
-    print("4. Delete Query")
-    print("5. Exit")
-    selection = input("Select Option (1-5): ")
+    print("\nMongoDB Query Generator | 基本的な CRUD MongoDB クエリージェネレーター")
+    print("1. Insert Query | クエリの挿入")
+    print("2. Find Query | 検索クエリ")
+    print("3. Update Query | 更新クエリ ")
+    print("4. Delete Query | クエリーの削除")
+    print("5. Exit | コードから抜ける")
+    selection = input("Select Option (1-5) | オプションを選択（1～5）: ")
     return selection
 
 def insert_data():
-    print("\nGenerate Insert Query")
-    print("1. Insert One")
-    print("2. Insert Many")
-    print("3. Back to Main Menu")
-    choice = input("Select Option (1-3): ")
+    print("\nGenerate Insert Query | 挿入クエリの生成")
+    print("1. Insert One | 1つのデータを挿入する")
+    print("2. Insert Many | 複数データの挿入")
+    print("3. Back to Main Menu | 前のメニューに戻る")
+    choice = input("Select Option (1-3) | オプションを選択（1～3) : ")
     
     if choice == "1":
-        print("\nInsert One Document")
+        print("\nInsert One | 挿入1")
         print("Enter field names and values (type 'done' when finished)")
         document = {}
         while True:
