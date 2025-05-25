@@ -4,7 +4,13 @@
 # https://www.mongodb.com/ja-jp/docs/manual/crud/
 # Work In Progress - Code isn't entirely stable.
 # 開発中 - コードは完全に安定していません。
-# Yg request bahasa indonesia, tunggu yak... lagi malas 
+
+
+# Apparently code is looking weird enough already, however next step is making the Automation and make a separated language as well
+# @shn-enaa | JA_JP Translator & Write 60% of the code.
+# @weiss-gcm | EN_US & IN_ID Translator & Write 40% of the code.
+
+#Documentation Coming Soon.... sorry owner is lazy atm
 
 collection_name = "collection"
 
