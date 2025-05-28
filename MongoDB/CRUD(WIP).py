@@ -89,27 +89,52 @@ def insert_data():
 
 def find_data():
     print("\nGenerate Find Query | 検索クエリ生成")
-    print("1. Find One | 1件検索")
-    print("2. Find Many | 複数検索 (件数指定)")
+    print("1. Find (Single Document Limit 1) | 1件検索")
+    print("2. Find with Limit | 複数検索 (件数指定)")
     print("3. Find All | 全件検索")
     print("4. Back to Main Menu | メインメニューに戻る")
     choice = input("Select Option (1-4) | 選択 (1～4): ")
 
     query = {}
+
     print("\nBuild your query (leave empty to match all documents) | 検索条件を入力 (空欄で全件一致):")
+    print("Type 'done' to finish, or 'and'/'or' to use logical operators.")
+    
     while True:
-        key = input("Field to filter by (or 'done' to finish) | フィルタ対象フィールド ('done'で終了): ")
+        key = input("Field name or logical operator ('done', 'and', 'or'): ").strip()
+
         if key.lower() == 'done':
             break
-        value = input(f"Value for {key} | {key}の値: ")
-        try:
-            value = int(value) if value.isdigit() else float(value) if value.replace('.', '', 1).isdigit() else value
-        except ValueError:
-            pass
-        query[key] = value
+        elif key.lower() in ['and', 'or']:
+            subqueries = []
+            print(f"\nBuilding ${key} condition block:")
+            while True:
+                sub_key = input("  Field for condition (or 'done'): ").strip()
+                if sub_key.lower() == 'done':
+                    break
+                operator = input("  Operator ($eq, $ne, $gt, $gte, $lt, $lte): ").strip()
+                value = input("  Value: ").strip()
+                try:
+                    value = int(value) if value.isdigit() else float(value) if value.replace('.', '', 1).isdigit() else value
+                except ValueError:
+                    pass
+                subqueries.append({sub_key: {operator: value}})
+            query[f"${key}"] = subqueries
+        else:
+            operator = input("  Operator (press Enter for exact match, or $gt/$lt/etc): ").strip()
+            value = input("  Value: ").strip()
+            try:
+                value = int(value) if value.isdigit() else float(value) if value.replace('.', '', 1).isdigit() else value
+            except ValueError:
+                pass
+
+            if operator:
+                query[key] = {operator: value}
+            else:
+                query[key] = value
 
     if choice == "1":
-        mongo_query = f"db.{collection_name}.findOne({query})"
+        mongo_query = f"db.{collection_name}.find({query}).limit(1)"
     elif choice == "2":
         try:
             limit = int(input("Maximum documents to return | 取得する最大件数: "))
@@ -124,6 +149,44 @@ def find_data():
 
     print("\nYour MongoDB query | 生成されたクエリ:")
     print(mongo_query)
+
+# def find_data():
+#     print("\nGenerate Find Query | 検索クエリ生成")
+#     print("1. Find One | 1件検索")
+#     print("2. Find Many | 複数検索 (件数指定)")
+#     print("3. Find All | 全件検索")
+#     print("4. Back to Main Menu | メインメニューに戻る")
+#     choice = input("Select Option (1-4) | 選択 (1～4): ")
+
+#     query = {}
+#     print("\nBuild your query (leave empty to match all documents) | 検索条件を入力 (空欄で全件一致):")
+#     while True:
+#         key = input("Field to filter by (or 'done' to finish) | フィルタ対象フィールド ('done'で終了): ")
+#         if key.lower() == 'done':
+#             break
+#         value = input(f"Value for {key} | {key}の値: ")
+#         try:
+#             value = int(value) if value.isdigit() else float(value) if value.replace('.', '', 1).isdigit() else value
+#         except ValueError:
+#             pass
+#         query[key] = value
+
+#     if choice == "1":
+#         mongo_query = f"db.{collection_name}.findOne({query})"
+#     elif choice == "2":
+#         try:
+#             limit = int(input("Maximum documents to return | 取得する最大件数: "))
+#             mongo_query = f"db.{collection_name}.find({query}).limit({limit})"
+#         except ValueError:
+#             mongo_query = f"db.{collection_name}.find({query})"
+#             print("Invalid number, using no limit. | 無効な数値のため制限なしで検索します。")
+#     elif choice == "3":
+#         mongo_query = f"db.{collection_name}.find({query})"
+#     else:
+#         return
+
+#     print("\nYour MongoDB query | 生成されたクエリ:")
+#     print(mongo_query)
 
 def update_data():
     print("\nGenerate Update Query | 更新クエリ生成")
