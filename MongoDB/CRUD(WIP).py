@@ -150,44 +150,6 @@ def find_data():
     print("\nYour MongoDB query | 生成されたクエリ:")
     print(mongo_query)
 
-# def find_data():
-#     print("\nGenerate Find Query | 検索クエリ生成")
-#     print("1. Find One | 1件検索")
-#     print("2. Find Many | 複数検索 (件数指定)")
-#     print("3. Find All | 全件検索")
-#     print("4. Back to Main Menu | メインメニューに戻る")
-#     choice = input("Select Option (1-4) | 選択 (1～4): ")
-
-#     query = {}
-#     print("\nBuild your query (leave empty to match all documents) | 検索条件を入力 (空欄で全件一致):")
-#     while True:
-#         key = input("Field to filter by (or 'done' to finish) | フィルタ対象フィールド ('done'で終了): ")
-#         if key.lower() == 'done':
-#             break
-#         value = input(f"Value for {key} | {key}の値: ")
-#         try:
-#             value = int(value) if value.isdigit() else float(value) if value.replace('.', '', 1).isdigit() else value
-#         except ValueError:
-#             pass
-#         query[key] = value
-
-#     if choice == "1":
-#         mongo_query = f"db.{collection_name}.findOne({query})"
-#     elif choice == "2":
-#         try:
-#             limit = int(input("Maximum documents to return | 取得する最大件数: "))
-#             mongo_query = f"db.{collection_name}.find({query}).limit({limit})"
-#         except ValueError:
-#             mongo_query = f"db.{collection_name}.find({query})"
-#             print("Invalid number, using no limit. | 無効な数値のため制限なしで検索します。")
-#     elif choice == "3":
-#         mongo_query = f"db.{collection_name}.find({query})"
-#     else:
-#         return
-
-#     print("\nYour MongoDB query | 生成されたクエリ:")
-#     print(mongo_query)
-
 def update_data():
     print("\nGenerate Update Query | 更新クエリ生成")
     print("1. Update One | 1件更新")
